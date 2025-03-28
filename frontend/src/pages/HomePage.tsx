@@ -20,11 +20,44 @@ import {
   Filter,
   ChevronLeft,
   ChevronRight,
+  // Sun,
+  // Moon,
+  // Star,
+  // Cloud,
+  // Rain,
+  // Snowflake,
+  // Bolt,
+  // Leaf,
+  // Fire,
+  // Bell,
+  // Camera,
+  // Clock,
+  // Gift,
+  // Key,
+  // Lock,
+  // Shield,
+  // Eye,
+  // EyeOff,
+  // Download,
+  // Upload,
+  // Trash,
+  // Pencil,
+  // Bookmark,
+  // Flag,
+  // MapPin,
+  // Compass,
+  // Rocket,
+  // Trophy,
+  // Code,
+  // Layers,
+  // Radio,
+  // Speaker,
+  // Phone,
+  // Chat,
 } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
 // Custom marker icon
 const customIcon = new L.Icon({
   iconUrl:
@@ -44,7 +77,41 @@ const cities = [
 const Header = () => {
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default: not logged in
   const languages = ["English", "Español", "Français", "Deutsch", "中文"];
+
+  const languageRef = React.useRef<HTMLDivElement>(null);
+  const profileRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        languageRef.current &&
+        !languageRef.current.contains(event.target as Node)
+      ) {
+        setLanguageDropdownOpen(false);
+      }
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Simulate login
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false); // Simulate logout
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white border-b border-gray-200 z-50">
@@ -84,7 +151,7 @@ const Header = () => {
               Airbnb your home
             </button>
           </Link>
-          <div className="relative">
+          <div className="relative" ref={languageRef}>
             <button
               className="rounded-full p-2 hover:bg-gray-100"
               onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
@@ -110,7 +177,7 @@ const Header = () => {
               </div>
             )}
           </div>
-          <div className="relative">
+          <div className="relative" ref={profileRef}>
             <button
               className="flex items-center gap-2 rounded-full border border-gray-300 p-2"
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
@@ -121,24 +188,45 @@ const Header = () => {
             {profileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                 <ul className="py-1">
-                  <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                    <Link to="/auth/login">Log in</Link>
-                  </li>
-                  <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                    <Link to="/auth/signup">Sign up</Link>
-                  </li>
-                  <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                    <Link to="/host">Airbnb your home</Link>
-                  </li>
-                  <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                    <Link to="/blog">Host an experience</Link>
-                  </li>
-                  <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                    <Link to="/profile">Profile</Link> {/* Fixed closing tag */}
-                  </li>
-                  <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                    <Link to="/help">Help</Link>
-                  </li>
+                  {isLoggedIn ? (
+                    <>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/profile">Profile</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/watchlist">Watchlist</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/messages">Messages</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/settings">Settings</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <button onClick={handleLogout}>Log out</button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/auth/login" onClick={handleLogin}>
+                          Log in
+                        </Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/auth/signup">Sign up</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/host">Airbnb your home</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/blog">Host an experience</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/help">Help</Link>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
             )}
@@ -189,20 +277,13 @@ const CategoryBar = () => {
     { name: "Cabins", icon: Building2 },
     { name: "Countryside", icon: Trees },
     { name: "Treehouses", icon: TreePine },
+    // { name: "Luxe", icon: Trees },
+    // { name: "Mansions", icon: Building },
+    // { name: "Shared homes", icon: Building2 },
+    { name: "Beachfront", icon: Waves },
   ];
 
-  const [showLeftButton, setShowLeftButton] = useState(false);
-  const [showRightButton, setShowRightButton] = useState(true);
-  const [showTotalBeforeTaxes, setShowTotalBeforeTaxes] = useState(false); // Fix: Add setShowTotalBeforeTaxes
   const containerRef = React.useRef<HTMLDivElement>(null);
-
-  const checkScrollPosition = () => {
-    if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      setShowLeftButton(scrollLeft > 0);
-      setShowRightButton(scrollLeft < scrollWidth - clientWidth);
-    }
-  };
 
   const scroll = (direction: "left" | "right") => {
     if (containerRef.current) {
@@ -211,82 +292,59 @@ const CategoryBar = () => {
         left: scrollAmount,
         behavior: "smooth",
       });
-
-      // Check scroll position after a short delay to allow smooth scrolling to complete
-      setTimeout(checkScrollPosition, 300);
     }
   };
 
-  useEffect(() => {
-    checkScrollPosition();
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("scroll", checkScrollPosition);
-      return () => container.removeEventListener("scroll", checkScrollPosition);
-    }
-  }, []);
-
   return (
-    <div className="relative">
-      <div className="flex items-center justify-between gap-4 mb-4">
-        <div className="relative flex-1">
+    <div className="relative flex items-center gap-4 mb-4">
+      {/* Left slider button */}
+      <button
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-2 shadow-md z-10"
+        onClick={() => scroll("left")}
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+
+      {/* Scrollable category container */}
+      <div
+        ref={containerRef}
+        className="flex items-center gap-8 overflow-x-auto pb-4 scrollbar-hide mx-12"
+        style={{ scrollBehavior: "smooth" }}
+      >
+        {categories.map((category, index) => (
           <div
-            ref={containerRef}
-            className="flex items-center gap-8 overflow-x-auto pb-4 scrollbar-hide"
-            style={{ scrollBehavior: "smooth" }}
+            key={index}
+            className={`flex flex-col items-center gap-1 min-w-[56px] cursor-pointer ${
+              index === 0 ? "border-b-2 border-black pb-2" : ""
+            }`}
           >
-            {categories.map((category, index) => (
-              <div
-                key={index}
-                className={`flex flex-col items-center gap-1 min-w-[56px] cursor-pointer ${
-                  index === 0 ? "border-b-2 border-black pb-2" : ""
-                }`}
-              >
-                <category.icon className="h-6 w-6" />
-                <span className="text-xs">{category.name}</span>
-              </div>
-            ))}
+            <category.icon className="h-6 w-6" />
+            <span className="text-xs">{category.name}</span>
           </div>
+        ))}
+      </div>
 
-          {showLeftButton && (
-            <button
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-2 shadow-md z-10"
-              onClick={() => scroll("left")}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-          )}
+      {/* Right slider button */}
+      <button
+        className="bg-white border border-gray-300 rounded-full p-2 shadow-md z-10"
+        onClick={() => scroll("right")}
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
 
-          {showRightButton && (
-            <button
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-2 shadow-md z-10"
-              onClick={() => scroll("right")}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2 border border-gray-300 rounded-md px-4 py-2 text-sm">
-            <Filter className="h-4 w-4" />
-            Filters
+      {/* Filters and Display total before taxes */}
+      <div className="flex items-center gap-4">
+        <button className="flex items-center gap-2 border border-gray-300 rounded-md px-4 py-2 text-sm">
+          <Filter className="h-4 w-4" />
+          Filters
+        </button>
+        <div className="flex items-center gap-2 text-sm">
+          <span>Display total before taxes</span>
+          <button
+            className={`relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200`}
+          >
+            <span className="inline-block h-4 w-4 transform rounded-full bg-white transition translate-x-1" />
           </button>
-          <div className="flex items-center gap-2 text-sm">
-            <span>Display total before taxes</span>
-            <button
-              className={`relative inline-flex h-6 w-11 items-center rounded-full ${
-                showTotalBeforeTaxes ? "bg-gray-900" : "bg-gray-200"
-              }`}
-              onClick={() => setShowTotalBeforeTaxes(!showTotalBeforeTaxes)} // Fix: Use setShowTotalBeforeTaxes
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                  showTotalBeforeTaxes ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -294,7 +352,7 @@ const CategoryBar = () => {
 };
 
 const PropertyGrid = () => {
-  const properties = [
+  const [properties, setProperties] = useState([
     {
       id: 1,
       location: "Manali, India",
@@ -304,7 +362,7 @@ const PropertyGrid = () => {
       rating: 4.88,
       isFavorite: true,
       isGuestFavorite: true,
-      imageUrl: "/placeholder.svg",
+      imageUrl: "images/image1.avif",
     },
     {
       id: 2,
@@ -315,7 +373,7 @@ const PropertyGrid = () => {
       rating: null,
       isFavorite: false,
       isGuestFavorite: false,
-      imageUrl: "/placeholder.svg",
+      imageUrl: "images/image2.avif",
     },
     {
       id: 3,
@@ -326,7 +384,7 @@ const PropertyGrid = () => {
       rating: null,
       isFavorite: false,
       isGuestFavorite: false,
-      imageUrl: "/placeholder.svg",
+      imageUrl: "images/image3.avif",
     },
     {
       id: 4,
@@ -337,7 +395,7 @@ const PropertyGrid = () => {
       rating: 4.95,
       isFavorite: false,
       isGuestFavorite: false,
-      imageUrl: "/placeholder.svg",
+      imageUrl: "images/image4.avif",
     },
     {
       id: 5,
@@ -348,7 +406,7 @@ const PropertyGrid = () => {
       rating: 4.5,
       isFavorite: true,
       isGuestFavorite: false,
-      imageUrl: "/placeholder.svg",
+      imageUrl: "images/image5.avif",
     },
     {
       id: 6,
@@ -359,7 +417,7 @@ const PropertyGrid = () => {
       rating: 4.7,
       isFavorite: false,
       isGuestFavorite: true,
-      imageUrl: "/placeholder.svg",
+      imageUrl: "images/image6.avif",
     },
     {
       id: 7,
@@ -370,64 +428,122 @@ const PropertyGrid = () => {
       rating: 4.2,
       isFavorite: false,
       isGuestFavorite: false,
-      imageUrl: "/placeholder.svg",
+      imageUrl: "images/image8.avif",
     },
-  ];
+    {
+      id: 8,
+      location: "Delhi, India",
+      distance: "300 kilometres away",
+      dates: "1-6 Sep",
+      price: "₹4,800 night",
+      rating: 4.9,
+      isFavorite: false,
+      isGuestFavorite: true,
+      imageUrl: "images/image9.avif",
+    },
+    {
+      id: 9,
+      location: "Agra, India",
+      distance: "200 kilometres away",
+      dates: "Available",
+      price: "₹3,000 night",
+      rating: null,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image10.avif",
+    },
+  ]);
+
+  const [watchlist, setWatchlist] = useState<number[]>([]);
+
+  const toggleFavorite = (id: number) => {
+    setProperties((prevProperties) =>
+      prevProperties.map((property) =>
+        property.id === id
+          ? { ...property, isFavorite: !property.isFavorite }
+          : property
+      )
+    );
+
+    setWatchlist((prevWatchlist) =>
+      watchlist.includes(id)
+        ? prevWatchlist.filter((itemId) => itemId !== id)
+        : [...prevWatchlist, id]
+    );
+  };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {properties.map((property) => (
-        <div key={property.id} className="group cursor-pointer">
-          <div className="relative aspect-square overflow-hidden rounded-xl">
-            <img
-              src={property.imageUrl || "/placeholder.svg"}
-              alt={property.location}
-              className="object-cover w-full h-full transition-transform group-hover:scale-105"
-            />
-            <button className="absolute top-2 right-2 z-10 text-white hover:text-white bg-transparent border-none">
-              <Heart
-                className={`h-6 w-6 ${
-                  property.isFavorite
-                    ? "fill-red-500 stroke-red-500"
-                    : "stroke-white"
-                }`}
+    <div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {properties.map((property) => (
+          <div key={property.id} className="group cursor-pointer">
+            <div className="relative aspect-square overflow-hidden rounded-xl">
+              <img
+                src={property.imageUrl || "/placeholder.svg"}
+                alt={property.location}
+                className="object-cover w-full h-full transition-transform group-hover:scale-105"
               />
-            </button>
-            {property.isGuestFavorite && (
-              <div className="absolute top-2 left-2 bg-white px-2 py-1 rounded-md text-xs font-medium">
-                Guest favourite
-              </div>
-            )}
-          </div>
-          <div className="mt-2">
-            <div className="flex justify-between">
-              <h3 className="font-medium">{property.location}</h3>
-              {property.rating && (
-                <div className="flex items-center gap-1">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>{property.rating}</span>
+              <button
+                className="absolute top-2 right-2 z-10 text-white hover:text-white bg-transparent border-none"
+                onClick={() => toggleFavorite(property.id)}
+              >
+                <Heart
+                  className={`h-6 w-6 ${
+                    property.isFavorite
+                      ? "fill-red-500 stroke-red-500"
+                      : "stroke-white"
+                  }`}
+                />
+              </button>
+              {property.isGuestFavorite && (
+                <div className="absolute top-2 left-2 bg-white px-2 py-1 rounded-md text-xs font-medium">
+                  Guest favourite
                 </div>
               )}
             </div>
-            <p className="text-gray-500 text-sm">{property.distance}</p>
-            <p className="text-gray-500 text-sm">{property.dates}</p>
-            <p className="mt-1">
-              <span className="font-medium">{property.price}</span>
-            </p>
+            <div className="mt-2">
+              <div className="flex justify-between">
+                <h3 className="font-medium">{property.location}</h3>
+                {property.rating && (
+                  <div className="flex items-center gap-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-4 h-4"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span>{property.rating}</span>
+                  </div>
+                )}
+              </div>
+              <p className="text-gray-500 text-sm">{property.distance}</p>
+              <p className="text-gray-500 text-sm">{property.dates}</p>
+              <p className="mt-1">
+                <span className="font-medium">{property.price}</span>
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+      <div className="mt-8">
+        <h2 className="text-lg font-medium">Watchlist</h2>
+        <ul className="list-disc pl-5">
+          {watchlist.map((id) => {
+            const property = properties.find((prop) => prop.id === id);
+            return property ? (
+              <li key={id} className="text-sm">
+                {property.location} - {property.price}
+              </li>
+            ) : null;
+          })}
+        </ul>
+      </div>
     </div>
   );
 };
@@ -466,7 +582,6 @@ const MapView = () => {
 
 const HomePage = () => {
   const [showMap, setShowMap] = useState(false);
-  const [showTotalBeforeTaxes, setShowTotalBeforeTaxes] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(true);
 
   useEffect(() => {
@@ -474,9 +589,9 @@ const HomePage = () => {
 
     const handleScroll = () => {
       if (window.scrollY > 100 && window.scrollY > lastScrollY) {
-        setIsSearchVisible(false); // Hide after scrolling down 100px
+        setIsSearchVisible(false);
       } else if (window.scrollY < lastScrollY) {
-        setIsSearchVisible(true); // Show on scrolling up
+        setIsSearchVisible(true);
       }
       lastScrollY = window.scrollY;
     };
@@ -498,9 +613,9 @@ const HomePage = () => {
         </div>
         <CategoryBar />
         {showMap ? <MapView /> : <PropertyGrid />}
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[1000]">
           <button
-            className="bg-gray-800 hover:bg-black text-white rounded-full px-4 py-3 flex items-center gap-2"
+            className="bg-gray-800 hover:bg-black text-white rounded-full px-4 py-3 flex items-center gap-2 shadow-lg"
             onClick={() => setShowMap(!showMap)}
           >
             <span>{showMap ? "Show list" : "Show map"}</span>
