@@ -43,7 +43,8 @@ const cities = [
 const Header = () => {
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Default: not logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const languages = ["English", "Español", "Français", "Deutsch", "中文"];
 
   const languageRef = React.useRef<HTMLDivElement>(null);
@@ -71,12 +72,21 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    setUserEmail(email);
+  }, []);
+
   const handleLogin = () => {
     setIsLoggedIn(true); // Simulate login
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false); // Simulate logout
+    // Clear localStorage and update state
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
+    setUserEmail(null);
+    setIsLoggedIn(false);
   };
 
   return (
@@ -148,13 +158,21 @@ const Header = () => {
               className="flex items-center gap-2 rounded-full border border-gray-300 p-2"
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
             >
-              <Menu className="h-4 w-4" />
-              <User className="h-6 w-6 text-gray-500" />
+              <>
+                <Menu className="h-4 w-4" />
+                {userEmail ? (
+                  <div className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full text-sm font-bold">
+                    {userEmail.charAt(0).toUpperCase()}
+                  </div>
+                ) : (
+                  <User className="h-6 w-6 text-gray-500" />
+                )}
+              </>
             </button>
             {profileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                 <ul className="py-1">
-                  {isLoggedIn ? (
+                  {userEmail ? (
                     <>
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <Link to="/profile">Profile</Link>
@@ -170,6 +188,15 @@ const Header = () => {
                       </li>
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <button onClick={handleLogout}>Log out</button>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/host">Airbnb your home</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/blog">Host an experience</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <Link to="/help">Help</Link>
                       </li>
                     </>
                   ) : (

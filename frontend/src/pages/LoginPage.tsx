@@ -19,8 +19,9 @@ const LoginPage = () => {
         password,
       });
 
-      // Store token in localStorage
+      // Store token and email in localStorage
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", email);
 
       // Redirect to HomePage
       navigate("/");
