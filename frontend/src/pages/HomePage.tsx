@@ -20,40 +20,6 @@ import {
   Filter,
   ChevronLeft,
   ChevronRight,
-  // Sun,
-  // Moon,
-  // Star,
-  // Cloud,
-  // Rain,
-  // Snowflake,
-  // Bolt,
-  // Leaf,
-  // Fire,
-  // Bell,
-  // Camera,
-  // Clock,
-  // Gift,
-  // Key,
-  // Lock,
-  // Shield,
-  // Eye,
-  // EyeOff,
-  // Download,
-  // Upload,
-  // Trash,
-  // Pencil,
-  // Bookmark,
-  // Flag,
-  // MapPin,
-  // Compass,
-  // Rocket,
-  // Trophy,
-  // Code,
-  // Layers,
-  // Radio,
-  // Speaker,
-  // Phone,
-  // Chat,
 } from "lucide-react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -239,28 +205,26 @@ const Header = () => {
 
 const Search = () => {
   return (
-    <div className="flex items-center rounded-full border shadow-sm divide-x">
-      <div className="px-6 py-3 hover:bg-gray-100 cursor-pointer transition-colors rounded-full">
+    <div className="flex items-center rounded-full border shadow-amber-50 px-6">
+      <div className=" pr-20 py-3 hover:bg-gray-100 cursor-pointer transition-colors rounded-l-full">
         <div className="text-sm font-medium">Where</div>
         <div className="text-sm text-gray-500">Search destinations</div>
       </div>
-      <div className="px-6 py-3 hover:bg-gray-100 cursor-pointer transition-colors rounded-full">
+      <div className="px-10 py-3 hover:bg-gray-100 cursor-pointer transition-colors">
         <div className="text-sm font-medium">Check in</div>
         <div className="text-sm text-gray-500">Add dates</div>
       </div>
-      <div className="px-6 py-3 hover:bg-gray-100 cursor-pointer transition-colors rounded-full">
+      <div className="px-10 py-3 hover:bg-gray-100 cursor-pointer transition-colors">
         <div className="text-sm font-medium">Check out</div>
         <div className="text-sm text-gray-500">Add dates</div>
       </div>
-      <div className="px-6 py-3 pr-2 hover:bg-gray-100 cursor-pointer transition-colors rounded-full">
+      <div className="px-10 py-3 pr-4 hover:bg-gray-100 cursor-pointer transition-colors">
         <div className="text-sm font-medium">Who</div>
         <div className="text-sm text-gray-500">Add guests</div>
       </div>
-      <div className="pl-2 pr-2">
-        <button className="rounded-full bg-red-500 hover:bg-red-600 h-12 w-12 flex items-center justify-center">
-          <SearchIcon className="h-5 w-5 text-white" />
-        </button>
-      </div>
+      <button className="rounded-full bg-red-500 hover:bg-red-600 h-12 w-12 flex items-center justify-center ml-20">
+        <SearchIcon className="h-5 w-5 text-white" />
+      </button>
     </div>
   );
 };
@@ -277,13 +241,14 @@ const CategoryBar = () => {
     { name: "Cabins", icon: Building2 },
     { name: "Countryside", icon: Trees },
     { name: "Treehouses", icon: TreePine },
-    // { name: "Luxe", icon: Trees },
+    { name: "Luxe", icon: Trees },
     // { name: "Mansions", icon: Building },
-    // { name: "Shared homes", icon: Building2 },
+    { name: "Shared homes", icon: Building2 },
     { name: "Beachfront", icon: Waves },
   ];
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const [isTotalBeforeTaxes, setIsTotalBeforeTaxes] = useState(false);
 
   const scroll = (direction: "left" | "right") => {
     if (containerRef.current) {
@@ -296,7 +261,7 @@ const CategoryBar = () => {
   };
 
   return (
-    <div className="relative flex items-center gap-4 mb-4">
+    <div className="relative flex items-center gap-3 mb-3">
       {/* Left slider button */}
       <button
         className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-2 shadow-md z-10"
@@ -308,7 +273,7 @@ const CategoryBar = () => {
       {/* Scrollable category container */}
       <div
         ref={containerRef}
-        className="flex items-center gap-8 overflow-x-auto pb-4 scrollbar-hide mx-12"
+        className="flex items-center gap-6 overflow-x-auto pb-4 scrollbar-hide mx-10"
         style={{ scrollBehavior: "smooth" }}
       >
         {categories.map((category, index) => (
@@ -333,17 +298,24 @@ const CategoryBar = () => {
       </button>
 
       {/* Filters and Display total before taxes */}
-      <div className="flex items-center gap-4">
-        <button className="flex items-center gap-2 border border-gray-300 rounded-md px-4 py-2 text-sm">
+      <div className="flex items-center gap-3">
+        <button className="flex items-center gap-2 border border-gray-300 rounded-md px-3 py-2 text-sm">
           <Filter className="h-4 w-4" />
           Filters
         </button>
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center  text-sm">
           <span>Display total before taxes</span>
           <button
-            className={`relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200`}
+            className={`relative inline-flex h-6 w-15 items-center rounded-full ${
+              isTotalBeforeTaxes ? " bg-black " : "bg-gray-500"
+            }`}
+            onClick={() => setIsTotalBeforeTaxes(!isTotalBeforeTaxes)}
           >
-            <span className="inline-block h-4 w-4 transform rounded-full bg-white transition translate-x-1" />
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                isTotalBeforeTaxes ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
           </button>
         </div>
       </div>

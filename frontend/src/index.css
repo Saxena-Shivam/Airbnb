@@ -1,5 +1,7 @@
 @import "tailwindcss";
-
+body {
+  /* background-color: gray; */
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
