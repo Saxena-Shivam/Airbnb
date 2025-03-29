@@ -44,7 +44,7 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
 
   const languageRef = React.useRef<HTMLDivElement>(null);
   const profileRef = React.useRef<HTMLDivElement>(null);
-
+  console.log(isLoggedIn);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -568,21 +568,153 @@ const MapView = ({
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 py-6">
-      <div className="container mx-auto px-4 text-center text-sm text-gray-600">
-        <p>
-          &copy; {new Date().getFullYear()} Airbnb Clone. All rights reserved.
-        </p>
-        <div className="flex justify-center gap-4 mt-2">
-          <Link to="/privacy" className="hover:underline">
-            Privacy Policy
-          </Link>
-          <Link to="/terms" className="hover:underline">
-            Terms of Service
-          </Link>
-          <Link to="/help" className="hover:underline">
-            Help
-          </Link>
+    <footer className="bg-gray-100 border-t border-gray-200 py-10">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* About Section */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">About</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>
+                <Link to="/about" className="hover:underline">
+                  How Airbnb works
+                </Link>
+              </li>
+              <li>
+                <Link to="/newsroom" className="hover:underline">
+                  Newsroom
+                </Link>
+              </li>
+              <li>
+                <Link to="/investors" className="hover:underline">
+                  Investors
+                </Link>
+              </li>
+              <li>
+                <Link to="/careers" className="hover:underline">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link to="/luxury" className="hover:underline">
+                  Airbnb Luxe
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support Section */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">Support</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>
+                <Link to="/help" className="hover:underline">
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link to="/safety" className="hover:underline">
+                  Safety information
+                </Link>
+              </li>
+              <li>
+                <Link to="/cancellation" className="hover:underline">
+                  Cancellation options
+                </Link>
+              </li>
+              <li>
+                <Link to="/neighborhood" className="hover:underline">
+                  Neighborhood Support
+                </Link>
+              </li>
+              <li>
+                <Link to="/trust" className="hover:underline">
+                  Trust & Safety
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Community Section */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">Community</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>
+                <Link to="/diversity" className="hover:underline">
+                  Diversity & Belonging
+                </Link>
+              </li>
+              <li>
+                <Link to="/accessibility" className="hover:underline">
+                  Accessibility
+                </Link>
+              </li>
+              <li>
+                <Link to="/associates" className="hover:underline">
+                  Airbnb Associates
+                </Link>
+              </li>
+              <li>
+                <Link to="/frontline" className="hover:underline">
+                  Frontline Stays
+                </Link>
+              </li>
+              <li>
+                <Link to="/guest-referrals" className="hover:underline">
+                  Guest Referrals
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Hosting Section */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">Hosting</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>
+                <Link to="/host" className="hover:underline">
+                  Host your home
+                </Link>
+              </li>
+              <li>
+                <Link to="/experience" className="hover:underline">
+                  Host an experience
+                </Link>
+              </li>
+              <li>
+                <Link to="/responsible-hosting" className="hover:underline">
+                  Responsible hosting
+                </Link>
+              </li>
+              <li>
+                <Link to="/resources" className="hover:underline">
+                  Resource Center
+                </Link>
+              </li>
+              <li>
+                <Link to="/community-center" className="hover:underline">
+                  Community Center
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-10 border-t border-gray-200 pt-6 text-center text-sm text-gray-600">
+          <p>
+            &copy; {new Date().getFullYear()} Airbnb Clone. All rights reserved.
+          </p>
+          <div className="flex justify-center gap-4 mt-2">
+            <Link to="/privacy" className="hover:underline">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:underline">
+              Terms of Service
+            </Link>
+            <Link to="/sitemap" className="hover:underline">
+              Sitemap
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
@@ -594,7 +726,7 @@ const HomePage = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(true);
   const [isSearchCompact, setIsSearchCompact] = useState(false);
   const [isTotalBeforeTaxes, setIsTotalBeforeTaxes] = useState(false);
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false); // State for FilterModal
   const [properties, setProperties] = useState([
     {
       id: 1,
@@ -1002,7 +1134,7 @@ const HomePage = () => {
     {
       id: 32,
       location: "Dimapur, India",
-      distance: "2,800 kilometres away",  
+      distance: "2,800 kilometres away",
       dates: "1-6 Aug",
       cost: 2100,
       rating: 2.7,
@@ -1071,7 +1203,7 @@ const HomePage = () => {
         <CategoryBar
           isTotalBeforeTaxes={isTotalBeforeTaxes}
           setIsTotalBeforeTaxes={setIsTotalBeforeTaxes}
-          onOpenFilterModal={() => setIsFilterModalOpen(true)}
+          onOpenFilterModal={() => setIsFilterModalOpen(true)} // Open FilterModal
         />
         {showMap ? (
           <MapView
@@ -1118,7 +1250,21 @@ const HomePage = () => {
       </div>
       <FilterModal
         isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
+        onClose={() => setIsFilterModalOpen(false)} // Close FilterModal
+        onApplyFilters={(filters) => {
+          console.log("Filters applied:", filters);
+          setProperties((prevProperties) =>
+            prevProperties.filter((property) => {
+              const matchesCity =
+                filters.cities.length === 0 ||
+                filters.cities.includes(property.location.split(",")[0]);
+              const matchesPrice =
+                property.cost >= filters.priceRange[0] &&
+                property.cost <= filters.priceRange[1];
+              return matchesCity && matchesPrice;
+            })
+          );
+        }}
       />
       <Footer />
     </main>

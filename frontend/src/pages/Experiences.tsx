@@ -35,13 +35,54 @@ const customIcon = new L.Icon({
   popupAnchor: [1, -34],
 });
 
+const Search = ({ isCompact }: { isCompact: boolean }) => {
+  return (
+    <div
+      className={`flex items-center rounded-full border border-gray-300 shadow-md px-6 transition-all duration-300 w-full max-w-md py-2 justify-center fixed-height ${
+        isCompact ? "opacity-0 scale-95" : "opacity-100 scale-100"
+      }`}
+      style={{
+        height: "40px", // Ensure consistent height
+        marginLeft: "50px", // Shift compact search bar to the right
+        transition: "opacity 0.3s ease, transform 0.3s ease", // Smooth fade and scale transition
+      }}
+    >
+      <div className="px-4 hover:bg-gray-200 cursor-pointer transition-colors rounded-l-full">
+        <div className="text-xs font-medium">Anywhere</div>
+      </div>
+      <div
+        className="px-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
+        style={{
+          borderLeft: "1px solid gray",
+          marginTop: "5px",
+          marginBottom: "5px",
+        }}
+      >
+        <div className="text-xs font-medium">Any week</div>
+      </div>
+      <div
+        className="px-4 pr-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
+        style={{
+          borderLeft: "1px solid gray",
+          marginTop: "5px",
+          marginBottom: "5px",
+        }}
+      >
+        <div className="text-xs font-medium">Add guests</div>
+      </div>
+      <button className="rounded-full bg-red-500 hover:bg-red-600 h-8 w-8 flex items-center justify-center ml-20">
+        <SearchIcon className="h-4 w-4 text-white" />
+      </button>
+    </div>
+  );
+};
+
 const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const languages = ["English", "Español", "Français", "Deutsch", "中文"];
-
   const languageRef = React.useRef<HTMLDivElement>(null);
   const profileRef = React.useRef<HTMLDivElement>(null);
 
@@ -77,7 +118,6 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
   };
 
   const handleLogout = () => {
-    // Clear localStorage and update state
     localStorage.removeItem("email");
     localStorage.removeItem("token");
     setUserEmail(null);
@@ -104,27 +144,23 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
           />
         </Link>
 
-        {/* Navigation bar for full mode */}
-        {!isSearchCompact && (
-          <nav className="hidden md:flex items-center gap-6">
-            <Link to="/" className="font-medium text-sm hover:text-black">
-              Stays
-            </Link>
-            <Link
-              to="/experiences"
-              className="text-gray-500 text-sm hover:text-black"
-            >
-              Experiences
-            </Link>
-          </nav>
-        )}
+        {/* Navigation bar */}
+        <nav className="hidden md:flex items-center gap-6">
+          <Link to="/" className="font-medium text-sm hover:text-black">
+            Stays
+          </Link>
+          <Link
+            to="/experiences"
+            className="text-gray-500 text-sm hover:text-black"
+          >
+            Experiences
+          </Link>
+        </nav>
 
-        {/* Compact search bar */}
-        {isSearchCompact && (
-          <div className="hidden md:flex flex-1 justify-center">
-            <Search compact={true} />
-          </div>
-        )}
+        {/* Search bar in the navbar */}
+        <div className="flex-1 mx-8">
+          <Search isCompact={isSearchCompact} />
+        </div>
 
         <div className="flex items-center gap-4">
           <Link to="/host">
@@ -191,7 +227,9 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <Link to="/settings">Settings</Link>
                       </li>
-
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <button onClick={handleLogout}>Log out</button>
+                      </li>
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <Link to="/host">Airbnb your home</Link>
                       </li>
@@ -200,9 +238,6 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
                       </li>
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <Link to="/help">Help</Link>
-                      </li>
-                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                        <button onClick={handleLogout}>Log out</button>
                       </li>
                     </>
                   ) : (
@@ -233,45 +268,6 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
         </div>
       </div>
     </header>
-  );
-};
-
-const Search = () => {
-  return (
-    <div
-      className="flex items-center rounded-full border border-gray-300 shadow-md px-6 transition-all duration-300 w-full max-w-md py-2 justify-center fixed-height"
-      style={{
-        height: "40px", // Ensure consistent height
-        marginLeft: "50px", // Shift compact search bar to the right
-      }}
-    >
-      <div className="px-4 hover:bg-gray-200 cursor-pointer transition-colors rounded-l-full">
-        <div className="text-xs font-medium">Anywhere</div>
-      </div>
-      <div
-        className="px-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
-        style={{
-          borderLeft: "1px solid gray",
-          marginTop: "5px",
-          marginBottom: "5px",
-        }}
-      >
-        <div className="text-xs font-medium">Any week</div>
-      </div>
-      <div
-        className="px-4 pr-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
-        style={{
-          borderLeft: "1px solid gray",
-          marginTop: "5px",
-          marginBottom: "5px",
-        }}
-      >
-        <div className="text-xs font-medium">Add guests</div>
-      </div>
-      <button className="rounded-full bg-red-500 hover:bg-red-600 h-8 w-8 flex items-center justify-center ml-20">
-        <SearchIcon className="h-4 w-4 text-white" />
-      </button>
-    </div>
   );
 };
 
@@ -317,7 +313,7 @@ const CategoryBar = ({
   };
 
   return (
-    <div className="relative flex items-center gap-3 mb-3">
+    <div className="relative flex items-center gap-3 mb-3 mt-5">
       {/* Left slider button */}
       <button
         className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white border border-gray-300 rounded-full p-2 shadow-md z-10"
@@ -325,7 +321,6 @@ const CategoryBar = ({
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
-
       {/* Scrollable category container */}
       <div
         ref={containerRef}
@@ -558,8 +553,6 @@ const Footer = () => {
 
 const HomePage = () => {
   const [showMap, setShowMap] = useState(false);
-  const [isSearchVisible, setIsSearchVisible] = useState(true);
-  const [isSearchCompact, setIsSearchCompact] = useState(false);
   const [isTotalBeforeTaxes, setIsTotalBeforeTaxes] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [properties, setProperties] = useState([
@@ -573,6 +566,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: true,
       imageUrl: "images/image1.avif",
+      lat: 32.2396,
+      lng: 77.1887,
     },
     {
       id: 2,
@@ -584,6 +579,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: false,
       imageUrl: "images/image2.avif",
+      lat: 31.634,
+      lng: 77.091,
     },
     {
       id: 3,
@@ -595,6 +592,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: false,
       imageUrl: "images/image3.avif",
+      lat: 32.042,
+      lng: 76.7179,
     },
     {
       id: 4,
@@ -606,6 +605,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: false,
       imageUrl: "images/image4.avif",
+      lat: 31.1048,
+      lng: 77.1734,
     },
     {
       id: 5,
@@ -617,6 +618,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: false,
       imageUrl: "images/image5.avif",
+      lat: 26.9124,
+      lng: 75.7873,
     },
     {
       id: 6,
@@ -628,6 +631,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: true,
       imageUrl: "images/image6.avif",
+      lat: 30.7333,
+      lng: 76.7794,
     },
     {
       id: 7,
@@ -639,6 +644,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: false,
       imageUrl: "images/image8.avif",
+      lat: 26.8467,
+      lng: 80.9462,
     },
     {
       id: 8,
@@ -650,6 +657,8 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: true,
       imageUrl: "images/image9.avif",
+      lat: 28.7041,
+      lng: 77.1025,
     },
     {
       id: 9,
@@ -661,6 +670,307 @@ const HomePage = () => {
       isFavorite: false,
       isGuestFavorite: false,
       imageUrl: "images/image10.avif",
+      lat: 27.1767,
+      lng: 78.0081,
+    },
+    {
+      id: 10,
+      location: "Mumbai, India",
+      distance: "1,400 kilometres away",
+      dates: "1-6 Oct",
+      cost: 6000,
+      rating: 4.8,
+      isFavorite: false,
+      isGuestFavorite: true,
+      imageUrl: "images/image11.avif",
+      lat: 19.076,
+      lng: 72.8777,
+    },
+    {
+      id: 11,
+      location: "Pune, India",
+      distance: "1,200 kilometres away",
+      dates: "1-6 Nov",
+      cost: 5500,
+      rating: 4.7,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image12.avif",
+      lat: 18.5204,
+      lng: 73.8567,
+    },
+    {
+      id: 12,
+      location: "Goa, India",
+      distance: "1,500 kilometres away",
+      dates: "1-6 Dec",
+      cost: 7000,
+      rating: 4.9,
+      isFavorite: false,
+      isGuestFavorite: true,
+      imageUrl: "images/image13.avif",
+      lat: 15.2993,
+      lng: 74.124,
+    },
+    {
+      id: 13,
+      location: "Hyderabad, India",
+      distance: "1,000 kilometres away",
+      dates: "1-6 Jan",
+      cost: 4800,
+      rating: 4.6,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image14.avif",
+      lat: 17.385,
+      lng: 78.4867,
+    },
+    {
+      id: 14,
+      location: "Bangalore, India",
+      distance: "1,200 kilometres away",
+      dates: "1-6 Feb",
+      cost: 5200,
+      rating: 4.5,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image15.avif",
+      lat: 12.9716,
+      lng: 77.5946,
+    },
+    {
+      id: 15,
+      location: "Chennai, India",
+      distance: "1,300 kilometres away",
+      dates: "1-6 Mar",
+      cost: 5000,
+      rating: 4.4,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image16.avif",
+      lat: 13.0827,
+      lng: 80.2707,
+    },
+    {
+      id: 16,
+      location: "Kolkata, India",
+      distance: "1,500 kilometres away",
+      dates: "1-6 Apr",
+      cost: 4500,
+      rating: 4.3,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image17.avif",
+      lat: 22.5726,
+      lng: 88.3639,
+    },
+    {
+      id: 17,
+      location: "Ahmedabad, India",
+      distance: "1,100 kilometres away",
+      dates: "1-6 May",
+      cost: 4000,
+      rating: 4.2,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image18.avif",
+      lat: 23.0225,
+      lng: 72.5714,
+    },
+    {
+      id: 18,
+      location: "Surat, India",
+      distance: "1,000 kilometres away",
+      dates: "1-6 Jun",
+      cost: 3800,
+      rating: 4.1,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image19.avif",
+      lat: 21.1702,
+      lng: 72.8311,
+    },
+    {
+      id: 19,
+      location: "Vadodara, India",
+      distance: "950 kilometres away",
+      dates: "1-6 Jul",
+      cost: 3600,
+      rating: 4.0,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image20.avif",
+      lat: 22.3072,
+      lng: 73.1812,
+    },
+    {
+      id: 20,
+      location: "Indore, India",
+      distance: "850 kilometres away",
+      dates: "1-6 Aug",
+      cost: 3400,
+      rating: 3.9,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image21.avif",
+      lat: 22.7196,
+      lng: 75.8577,
+    },
+    {
+      id: 21,
+      location: "Bhopal, India",
+      distance: "800 kilometres away",
+      dates: "1-6 Sep",
+      cost: 3200,
+      rating: 3.8,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image22.avif",
+      lat: 23.2599,
+      lng: 77.4126,
+    },
+    {
+      id: 22,
+      location: "Nagpur, India",
+      distance: "900 kilometres away",
+      dates: "1-6 Oct",
+      cost: 3100,
+      rating: 3.7,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image23.avif",
+      lat: 21.1458,
+      lng: 79.0882,
+    },
+    {
+      id: 23,
+      location: "Raipur, India",
+      distance: "1,100 kilometres away",
+      dates: "1-6 Nov",
+      cost: 3000,
+      rating: 3.6,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image24.avif",
+      lat: 21.2514,
+      lng: 81.6296,
+    },
+    {
+      id: 24,
+      location: "Patna, India",
+      distance: "1,400 kilometres away",
+      dates: "1-6 Dec",
+      cost: 2900,
+      rating: 3.5,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image25.avif",
+      lat: 25.5941,
+      lng: 85.1376,
+    },
+    {
+      id: 25,
+      location: "Ranchi, India",
+      distance: "1,300 kilometres away",
+      dates: "1-6 Jan",
+      cost: 2800,
+      rating: 3.4,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image26.avif",
+      lat: 23.3441,
+      lng: 85.3096,
+    },
+    {
+      id: 26,
+      location: "Bhubaneswar, India",
+      distance: "1,200 kilometres away",
+      dates: "1-6 Feb",
+      cost: 2700,
+      rating: 3.3,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image27.avif",
+      lat: 20.2961,
+      lng: 85.8245,
+    },
+    {
+      id: 27,
+      location: "Guwahati, India",
+      distance: "1,800 kilometres away",
+      dates: "1-6 Mar",
+      cost: 2600,
+      rating: 3.2,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image28.avif",
+      lat: 26.1445,
+      lng: 91.7362,
+    },
+    {
+      id: 28,
+      location: "Shillong, India",
+      distance: "2,000 kilometres away",
+      dates: "1-6 Apr",
+      cost: 2500,
+      rating: 3.1,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image29.avif",
+      lat: 25.5788,
+      lng: 91.8933,
+    },
+    {
+      id: 29,
+      location: "Imphal, India",
+      distance: "2,200 kilometres away",
+      dates: "1-6 May",
+      cost: 2400,
+      rating: 3.0,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image30.avif",
+      lat: 24.817,
+      lng: 93.9368,
+    },
+    {
+      id: 30,
+      location: "Aizawl, India",
+      distance: "2,400 kilometres away",
+      dates: "1-6 Jun",
+      cost: 2300,
+      rating: 2.9,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image31.avif",
+      lat: 23.1645,
+      lng: 92.9376,
+    },
+    {
+      id: 31,
+      location: "Agartala, India",
+      distance: "2,600 kilometres away",
+      dates: "1-6 Jul",
+      cost: 2200,
+      rating: 2.8,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image32.avif",
+      lat: 23.8315,
+      lng: 91.2862,
+    },
+    {
+      id: 32,
+      location: "Dimapur, India",
+      distance: "2,800 kilometres away",
+      dates: "1-6 Aug",
+      cost: 2100,
+      rating: 2.7,
+      isFavorite: false,
+      isGuestFavorite: false,
+      imageUrl: "images/image33.avif",
+      lat: 25.8998,
+      lng: 93.7191,
     },
   ]);
 
@@ -685,39 +995,10 @@ const HomePage = () => {
     });
   };
 
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const scrollThreshold = 100; // Adjust threshold for smoother transition
-      if (window.scrollY > scrollThreshold && window.scrollY > lastScrollY) {
-        setIsSearchVisible(false);
-        setIsSearchCompact(true);
-      } else if (
-        window.scrollY < scrollThreshold &&
-        window.scrollY < lastScrollY
-      ) {
-        setIsSearchVisible(true);
-        setIsSearchCompact(false);
-      }
-      lastScrollY = window.scrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <main className="min-h-screen">
-      <Header isSearchCompact={isSearchCompact} />
+      <Header isSearchCompact={false} />
       <div className="container mx-auto px-4 py-4 pt-20">
-        <div
-          className={`flex justify-center mb-8 mt-4 transition-transform duration-300 ${
-            isSearchVisible ? "translate-y-0" : "-translate-y-full"
-          }`}
-        >
-          {!isSearchCompact && <Search />}
-        </div>
         <CategoryBar
           isTotalBeforeTaxes={isTotalBeforeTaxes}
           setIsTotalBeforeTaxes={setIsTotalBeforeTaxes}
