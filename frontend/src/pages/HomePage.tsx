@@ -237,6 +237,31 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
 };
 
 const Search = ({ compact }: { compact?: boolean }) => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 1023); // Adjust for small screens
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (isSmallScreen) {
+    return (
+      <div className="flex items-center border border-gray-300 rounded-full px-4 py-2 shadow-md w-full max-w-xs">
+        <SearchIcon className="h-5 w-5 text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="ml-2 flex-1 outline-none text-sm"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`flex items-center rounded-full border border-gray-300 shadow-md px-6 transition-all duration-300 ${
