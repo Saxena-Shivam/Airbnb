@@ -8,12 +8,14 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setIsLoading(true);
 
     try {
@@ -23,13 +25,18 @@ const SignupPage = () => {
         password,
       });
 
-      // Redirect to login page after successful signup
-      navigate("/auth/login", {
-        state: {
-          signupSuccess: true,
-          email: email,
-        },
-      });
+      // Store the name in localStorage
+      localStorage.setItem("name", name);
+
+      setSuccess("Signup successful! Redirecting to login page...");
+      setTimeout(() => {
+        navigate("/auth/login", {
+          state: {
+            signupSuccess: true,
+            email: email,
+          },
+        });
+      }, 2000);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || "Signup failed. Try again.");
@@ -50,6 +57,12 @@ const SignupPage = () => {
       {error && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 text-sm rounded-md text-center">
           {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="mb-4 p-3 bg-green-100 text-green-700 text-sm rounded-md text-center">
+          {success}
         </div>
       )}
 
@@ -143,7 +156,7 @@ const SignupPage = () => {
         </button>
 
         <button
-          className="w-full border border-gray-300 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+          className="w-full border cursor-pointer border-gray-300 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
           type="button"
         >
           <Phone className="h-4 w-4 text-gray-600" />

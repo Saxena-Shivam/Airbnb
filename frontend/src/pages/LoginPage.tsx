@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Facebook, Mail } from "lucide-react";
 
@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -19,12 +20,13 @@ const LoginPage = () => {
         password,
       });
 
-      // Store token and email in localStorage
+      // Store token, email, and name in localStorage
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("email", email);
+      localStorage.setItem("name", response.data.name); // Ensure the API returns the user's name
 
       // Redirect to HomePage
-      navigate("/");
+      navigate("/", { state: { loginSuccess: true } });
     } catch {
       setError("Invalid email or password");
     }
@@ -35,6 +37,12 @@ const LoginPage = () => {
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold">Log in to Airbnb</h1>
       </div>
+
+      {location.state?.signupSuccess && (
+        <p className="text-green-500 text-center mb-4">
+          Signup successful! Please log in.
+        </p>
+      )}
 
       {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -71,7 +79,7 @@ const LoginPage = () => {
 
         <button
           type="submit"
-          className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
+          className="w-full cursor-pointer bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
         >
           Log in
         </button>

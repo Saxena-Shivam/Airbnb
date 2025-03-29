@@ -191,9 +191,7 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <Link to="/settings">Settings</Link>
                       </li>
-                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
-                        <button onClick={handleLogout}>Log out</button>
-                      </li>
+
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <Link to="/host">Airbnb your home</Link>
                       </li>
@@ -202,6 +200,9 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
                       </li>
                       <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
                         <Link to="/help">Help</Link>
+                      </li>
+                      <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">
+                        <button onClick={handleLogout}>Log out</button>
                       </li>
                     </>
                   ) : (
