@@ -122,7 +122,7 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
         {/* Compact search bar */}
         {isSearchCompact && (
           <div className="hidden md:flex flex-1 justify-center">
-            <Search compact />
+            <Search compact={true} />
           </div>
         )}
 
@@ -235,73 +235,40 @@ const Header = ({ isSearchCompact }: { isSearchCompact: boolean }) => {
   );
 };
 
-const Search = ({ compact }: { compact?: boolean }) => {
+const Search = () => {
   return (
     <div
-      className={`flex items-center rounded-full border border-gray-300 shadow-md px-6 transition-all duration-300 ${
-        compact
-          ? "w-full max-w-md py-2 justify-center fixed-height"
-          : "py-3 justify-start fixed-height"
-      }`}
+      className="flex items-center rounded-full border border-gray-300 shadow-md px-6 transition-all duration-300 w-full max-w-md py-2 justify-center fixed-height"
       style={{
-        height: compact ? "40px" : "60px", // Ensure consistent height
-        marginLeft: compact ? "50px" : "0", // Shift compact search bar to the right
+        height: "40px", // Ensure consistent height
+        marginLeft: "50px", // Shift compact search bar to the right
       }}
     >
-      {compact ? (
-        <>
-          <div className="px-4 hover:bg-gray-200 cursor-pointer transition-colors rounded-l-full">
-            <div className="text-xs font-medium">Anywhere</div>
-          </div>
-          <div
-            className="px-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
-            style={{
-              borderLeft: "1px solid gray",
-              marginTop: "5px",
-              marginBottom: "5px",
-            }}
-          >
-            <div className="text-xs font-medium">Any week</div>
-          </div>
-          <div
-            className="px-4 pr-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
-            style={{
-              borderLeft: "1px solid gray",
-              marginTop: "5px",
-              marginBottom: "5px",
-            }}
-          >
-            <div className="text-xs font-medium">Add guests</div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="pr-20 py-3 hover:bg-gray-200 cursor-pointer transition-colors rounded-l-full">
-            <div className="text-sm font-medium">Where</div>
-            <div className="text-sm text-gray-500">Search destinations</div>
-          </div>
-          <div className="px-10 py-3 hover:bg-gray-200 cursor-pointer transition-colors relative">
-            <div className="text-sm font-medium pl-4">Check in</div>
-            <div className="text-sm text-gray-500 pl-4">Add dates</div>
-          </div>
-          <div className="px-10 py-3 hover:bg-gray-200 cursor-pointer transition-colors relative">
-            <div className="text-sm font-medium pl-4">Check out</div>
-            <div className="text-sm text-gray-500 pl-4">Add dates</div>
-          </div>
-          <div className="px-10 py-3 pr-4 hover:bg-gray-200 cursor-pointer transition-colors relative">
-            <div className="text-sm font-medium pl-4">Who</div>
-            <div className="text-sm text-gray-500 pl-4">Add guests</div>
-          </div>
-        </>
-      )}
-      <button
-        className={`rounded-full bg-red-500 hover:bg-red-600 ${
-          compact ? "h-8 w-8" : "h-12 w-12"
-        } flex items-center justify-center ml-20`}
+      <div className="px-4 hover:bg-gray-200 cursor-pointer transition-colors rounded-l-full">
+        <div className="text-xs font-medium">Anywhere</div>
+      </div>
+      <div
+        className="px-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
+        style={{
+          borderLeft: "1px solid gray",
+          marginTop: "5px",
+          marginBottom: "5px",
+        }}
       >
-        <SearchIcon
-          className={`${compact ? "h-4 w-4" : "h-5 w-5"} text-white`}
-        />
+        <div className="text-xs font-medium">Any week</div>
+      </div>
+      <div
+        className="px-4 pr-4 hover:bg-gray-200 cursor-pointer transition-colors relative"
+        style={{
+          borderLeft: "1px solid gray",
+          marginTop: "5px",
+          marginBottom: "5px",
+        }}
+      >
+        <div className="text-xs font-medium">Add guests</div>
+      </div>
+      <button className="rounded-full bg-red-500 hover:bg-red-600 h-8 w-8 flex items-center justify-center ml-20">
+        <SearchIcon className="h-4 w-4 text-white" />
       </button>
     </div>
   );

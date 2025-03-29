@@ -90,13 +90,13 @@ const HostPage = () => {
             </h2>
 
             <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-16">
-              <div className="relative h-[1400px] w-[620px]">
+              <div className="relative h-[600px] w-[420px]">
                 <img
                   src="/host-image.avif"
-                  height={1400}
-                  width={520}
+                  height={600}
+                  width={420}
                   alt="Airbnb app screenshot - Tell guests what your place has to offer"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain object-cover"
                 />
               </div>
               <div className="relative h-[400px] w-[220px]">
@@ -191,7 +191,7 @@ const HostPage = () => {
                   <img
                     src="/left.avif"
                     alt="Listing editor"
-                    className="w-[150px] h-[300px] object-contain mx-auto"
+                    className="w-[150px] h-[300px] object-contain mx-auto object-cover"
                   />
                 </div>
                 <h3 className="font-medium">Listing editor</h3>
@@ -205,7 +205,7 @@ const HostPage = () => {
                   <img
                     src="/middle.avif"
                     alt="Calendar"
-                    className="w-[150px] h-[300px] object-contain mx-auto"
+                    className="w-[150px] h-[300px] object-contain mx-auto object-cover"
                   />
                 </div>
                 <h3 className="font-medium">Calendar</h3>
@@ -219,7 +219,7 @@ const HostPage = () => {
                   <img
                     src="/right.avif"
                     alt="Messages"
-                    className="w-[150px] h-[300px] object-contain mx-auto"
+                    className="w-[150px] h-[300px] object-contain mx-auto object-cover"
                   />
                 </div>
                 <h3 className="font-medium">Messages</h3>

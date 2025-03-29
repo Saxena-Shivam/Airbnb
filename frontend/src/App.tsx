@@ -5,6 +5,9 @@ import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import BlogPage from "./pages/BlogPage";
+import Experiences from "./pages/Experiences";
+import WatchlistPage from "./pages/WatchlistPage";
+import BookingPage from "./pages/BookingPage";
 import "./index.css";
 
 function App() {
@@ -17,6 +20,10 @@ function App() {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignupPage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/watchlist" element={<WatchlistPage />} />
+        <Route path="/experiences" element={<Experiences />} />
+        <Route path="/booking/:id" element={<BookingPage />} />
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>
   );
