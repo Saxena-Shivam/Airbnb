@@ -19,6 +19,7 @@ const SignupPage = () => {
     setIsLoading(true);
 
     try {
+      // Example in SignupPage.tsx
       await axios.post("http://localhost:5000/api/register", {
         name,
         email,

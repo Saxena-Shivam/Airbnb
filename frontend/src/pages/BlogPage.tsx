@@ -3,7 +3,7 @@ import { ArrowRight, Calendar, Clock, User, Menu, Globe } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="border-b border-gray-200">
+    <header className="border-b border-gray-200 bg-white ml-0">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center">

@@ -5,7 +5,7 @@ import React from "react";
 
 const HostHeader = () => {
   return (
-    <header className="border-b border-gray-200">
+    <header className="border-b border-gray-200 bg-white">
       <div className="container flex items-center justify-between px-4 py-0">
         <Link to="/" className="flex items-center">
           <img
@@ -96,7 +96,7 @@ const HostPage = () => {
                   height={600}
                   width={420}
                   alt="Airbnb app screenshot - Tell guests what your place has to offer"
-                  className="w-full h-full object-contain object-cover"
+                  className="w-full h-full object-cover"
                 />
               </div>
               <div className="relative h-[400px] w-[220px]">
@@ -191,7 +191,7 @@ const HostPage = () => {
                   <img
                     src="/left.avif"
                     alt="Listing editor"
-                    className="w-[150px] h-[300px] object-contain mx-auto object-cover"
+                    className="w-[150px] h-[300px] object-cover mx-auto"
                   />
                 </div>
                 <h3 className="font-medium">Listing editor</h3>
@@ -205,7 +205,7 @@ const HostPage = () => {
                   <img
                     src="/middle.avif"
                     alt="Calendar"
-                    className="w-[150px] h-[300px] object-contain mx-auto object-cover"
+                    className="w-[150px] h-[300px] object-cover mx-auto"
                   />
                 </div>
                 <h3 className="font-medium">Calendar</h3>
@@ -219,7 +219,7 @@ const HostPage = () => {
                   <img
                     src="/right.avif"
                     alt="Messages"
-                    className="w-[150px] h-[300px] object-contain mx-auto object-cover"
+                    className="w-[150px] h-[300px] object-cover mx-auto"
                   />
                 </div>
                 <h3 className="font-medium">Messages</h3>

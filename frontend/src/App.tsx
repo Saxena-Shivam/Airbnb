@@ -10,6 +10,7 @@ import WatchlistPage from "./pages/WatchlistPage";
 import BookingPage from "./pages/BookingPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import "./index.css";
+import MessagesPage from "./pages/MessagesPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/watchlist" element={<WatchlistPage />} />
         <Route path="/experiences" element={<Experiences />} />
         <Route path="/booking/:id" element={<BookingPage />} />
+        <Route path="/messages" element={<MessagesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
